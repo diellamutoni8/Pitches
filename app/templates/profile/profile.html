@@ -1,0 +1,44 @@
+{% extends 'base.html'%}
+{% import 'macros.html' as macro %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- displaying  Username-->
+        <div class="col-sm-4">
+            <h3 class="text-center mt-3">My Profile</h3>
+            <hr>
+            {% if user.profile_pic_path %}
+            <img src="{{url_for('static',filename=user.profile_pic_path)}}" alt="" class="img-thumbnail">
+            {%else%}
+            <p>No profile picture</p>
+            {% endif %}
+            <!--Displaying user bio-->
+            <div class="mr-5">
+                <span class="row">
+                    <h3 class="h3"> Username : </h3>
+                    <p class="h3">{{user.username| capitalize}} </p>
+                </span>
+            </div>
+            {% if user == current_user %}
+            <form action="{{url_for('main.update_pic',uname=user.username)}}" method="post"
+                enctype="multipart/form-data" class="pt-5">
+                <div class="form-group">
+                    <input type="file" name="photo" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-info" type="submit">Submit</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+        <div class="col-sm-8">
+            <h3 class="text-uppercase text-center"> My Pitches</h3>
+            <hr>
+            {{macro.displayPitches(pitches)}}
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}
